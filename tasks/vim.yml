@@ -1,0 +1,6 @@
+---
+- name: Linking vimrc
+  file:
+    src: '{{ dotfile_config_path }}/vim/vimrc'
+    dest: '$HOME/.vimrc'
+    state: link

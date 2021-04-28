@@ -1,0 +1,24 @@
+---
+
+- name: Install tmux
+  package:
+    name: tmux
+    state: present
+
+- name: Install oh-my-tmux
+  git:
+    repo: 'https://github.com/gpakosz/.tmux'
+    dest: '$HOME/.tmux'
+    clone: yes
+
+- name: Install tmux.conf config files
+  file:
+    src: '$HOME/.tmux/.tmux.conf'
+    dest: '$HOME/.tmux.conf'
+    state: link
+
+- name: Install tmux.conf.local config files
+  file:
+    src: '{{ dotfile_config_path }}/tmux/tmux.conf.local'
+    dest: '$HOME/.tmux.conf.local'
+    state: link

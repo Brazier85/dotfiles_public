@@ -1,0 +1,12 @@
+{
+    // Ansible Extension will be used
+    "files.associations": {
+        "**/*.yml": "ansible",
+        "hosts": "ini"
+    },
+    "files.defaultLanguage": "ansible",
+    "[ansible]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+      }
+}

@@ -1,0 +1,14 @@
+---
+- name: Linking gitconfig
+  file:
+    src: '{{ dotfile_config_path }}/git/gitconfig'
+    dest: '$HOME/.gitconfig'
+    state: link
+  when: not work
+
+- name: "[WORK] Linking gitconfig"
+  file:
+    src: '{{ dotfile_config_path }}/git/gitconfig.work'
+    dest: '$HOME/.gitconfig'
+    state: link
+  when: work

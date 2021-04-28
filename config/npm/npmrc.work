@@ -1,0 +1,9 @@
+registry=https://artifactory.domain.net/artifactory/api/npm/npm/
+proxy=http://proxy.domain.net:8080
+https-proxy=http://proxy.domain.net:8080
+noproxy=localhost,127.0.0.1,localaddress,.localdomain.com,.domain.net
+phantomjs_cdnurl=https://artifactory.domain.net/artifactory/github-binaries-local
+sass_binary_site=https://artifactory.domain.net/artifactory/github.com/sass/node-sass/releases/download
+cafile=/home/username/.ssh/ca-bundle.crt
+http-proxy=http://proxy.domain.net:8080
+strict-ssl=false

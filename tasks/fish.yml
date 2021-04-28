@@ -1,0 +1,116 @@
+---
+- name: Add fish repo
+  become: yes
+  apt_repository:
+    repo: ppa:fish-shell/release-3
+
+- name: Install fish shell
+  become: yes
+  package:
+    name: fish
+    state: present
+
+- name: Check if oh-my-fish is installed
+  stat:
+    path: '$HOME/.config/fish/conf.d/omf.fish'
+  register: omf
+
+- name: Clone oh-my-fish repo
+  git:
+    repo: 'https://github.com/oh-my-fish/oh-my-fish'
+    dest: '/tmp/omf'
+    clone: yes
+  when: not omf.stat.exists
+
+- name: Install oh-my-fish
+  command: /tmp/omf/bin/install -y --offline --noninteractive
+  when: not omf.stat.exists
+
+- name: Create fish function directory
+  file:
+    path: "{{ dotfile_config_path }}/fish/functions/"
+    state: directory
+
+- name: Find fish function files
+  find:
+    paths: '{{ dotfile_config_path }}/fish/functions/all'
+    patterns: '*.fish'
+  register: fish_function_files
+
+- name: Linking fish function files
+  file:
+    src: '{{ item.path }}'
+    dest: '$HOME/.config/fish/functions/{{ item.path | basename }}'
+    state: link
+  with_items: "{{ fish_function_files.files }}"
+
+- name: Find fish work-function files
+  find:
+    paths: '{{ dotfile_config_path }}/fish/functions/work'
+    patterns: '*.fish'
+  register: fish_work_function_files
+  when: work
+
+- name: Linking fish work-function files
+  file:
+    src: '{{ item.path }}'
+    dest: '$HOME/.config/fish/functions/{{ item.path | basename }}'
+    state: link
+  with_items: "{{ fish_work_function_files.files }}"
+  when: work
+
+- name: Find fish wsl-function files
+  find:
+    paths: '{{ dotfile_config_path }}/fish/functions/wsl'
+    patterns: '*.fish'
+  register: fish_wsl_function_files
+  when: '"WSL_DISTRO_NAME" in ansible_env'
+
+- name: Linking fish wsl-function files
+  file:
+    src: '{{ item.path }}'
+    dest: '$HOME/.config/fish/functions/{{ item.path | basename }}'
+    state: link
+  with_items: "{{ fish_wsl_function_files.files }}"
+  when: '"WSL_DISTRO_NAME" in ansible_env'
+
+- name: Find fish config files
+  find:
+    paths: '{{ dotfile_config_path }}/fish/conf.d'
+    patterns: '*.fish'
+  register: fish_conf_files
+
+- name: Linking fish config files
+  file:
+    src: '{{ item.path }}'
+    dest: '$HOME/.config/fish/conf.d/{{ item.path | basename }}'
+    state: link
+  with_items: "{{ fish_conf_files.files }}"
+
+- name: Find fish omf files
+  find:
+    paths: '{{ dotfile_config_path }}/fish/omf'
+    patterns: '*'
+  register: fish_omf_files
+
+- name: Linking fish omf files
+  file:
+    src: '{{ item.path }}'
+    dest: '$HOME/.config/omf/{{ item.path | basename }}'
+    state: link
+  with_items: "{{ fish_omf_files.files }}"
+
+- name: Install omf plugins
+  command: fish -c "omf install"
+
+- name: Run whoami without become.
+  command: whoami
+  changed_when: false
+  register: whoami
+
+- name: Set fish as default shell
+  user:
+    name: '{{ whoami.stdout }}'
+    shell: /usr/bin/fish
+  become: yes
+    

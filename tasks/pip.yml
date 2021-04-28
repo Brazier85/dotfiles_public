@@ -1,0 +1,8 @@
+---
+
+- name: Install PIP packages
+  become: yes
+  pip:
+    name:
+      - thefuck
+    state: latest

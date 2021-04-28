@@ -1,0 +1,16 @@
+---
+- name: Linking ssh config
+  file:
+    src: '{{ dotfile_config_path }}/ssh/config'
+    dest: '$HOME/.ssh/config'
+    state: link
+    mode: 0600
+  when: not work
+    
+- name: "[WORK] Linking ssh config"
+  file:
+    src: '{{ dotfile_config_path }}/ssh/config.work'
+    dest: '$HOME/.ssh/config'
+    state: link
+    mode: '0600'
+  when: work

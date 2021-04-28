@@ -1,0 +1,34 @@
+---
+
+- name: Install CA Certificates package
+  become: yes
+  package:
+    name: ca-certificates
+    state: present
+
+- name: "Copy sick certs"
+  copy:
+    src: '{{ dotfile_config_path }}/certs/work'
+    dest: '/usr/local/share/ca-certificates/work'
+  become: yes
+
+- name: Update CA Certificates
+  become: yes
+  command: "update-ca-certificates"
+
+- name: "Add proxy to env"
+  blockinfile:
+    path: /etc/environment
+    create: yes
+    backup: yes
+    block: |
+      export NO_PROXY=.domain.net,localhost,127.0.0.1,domain.net
+      export no_proxy=.domain.net,localhost,127.0.0.1,domain.net
+      export HTTP_PROXY=http://proxy.domain.net:8080
+      export HTTPS_PROXY=http://proxy.domain.net:8080
+      export http_proxy=http://proxy.domain.net:8080
+      export https_proxy=http://proxyg.domain.net:8080
+      export SSL_CERT_DIR="/etc/ssl/certs"
+      export REQUESTS_CA_BUNDLE=/etc/ssl/certs
+      export DEBIAN_FRONTEND=noninteractive
+  become: yes

@@ -1,0 +1,8 @@
+---
+
+- name: "[WORK] Linking npmrc"
+  file:
+    src: '{{ dotfile_config_path }}/npm/npmrc.work'
+    dest: '$HOME/.npmrc'
+    state: link
+  when: work

@@ -1,0 +1,10 @@
+Host github.com
+    IdentityFile ~/.ssh/id_rsa.github
+
+Host pihole
+	Hostname 192.168.22.71
+	User pi
+
+Host zero
+	Hostname 192.168.22.1
+	User pi

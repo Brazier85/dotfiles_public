@@ -1,0 +1,28 @@
+[alias]
+	i = init
+	s = status
+    p = push
+    a = add .
+    c = commit -m
+    b = branch
+
+    ra = remote add
+    po = push origin
+    co = checkout
+
+    pom = push origin master
+[user]
+	name = My NAME
+	email = myworkmail.mail
+[http]
+	proxy = http://proxy.domain.net:8080
+	sslVerify = false
+	postBuffer = 1048576000
+[https]
+	proxy = http://proxy.domain.net:8080
+[http "http://gitlab.domain.net"]
+	proxy = ""
+[https "https://gitlab.domain.net"]
+	proxy = ""
+[core]
+	hooksPath = .githooks

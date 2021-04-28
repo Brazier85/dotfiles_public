@@ -1,0 +1,40 @@
+- hosts: localhost
+
+  vars:
+    work: False
+    dotfile_path: "~/.dotfiles"
+    dotfile_config_path: "{{ dotfile_path }}/config"
+
+  tasks:
+
+    - name: Configuring WORK Proxy
+      include_tasks: tasks/work_proxy.yml
+      when: work
+
+    - name: Install default packages
+      include_tasks: tasks/packages.yml
+
+    - name: Install pip packages
+      include_tasks: tasks/pip.yml
+
+    - name: Configuring git
+      include_tasks: tasks/git.yml
+
+    - name: Configuring fish
+      include_tasks: tasks/fish.yml
+
+    - name: Configuring ssh
+      include_tasks: tasks/ssh.yml
+
+    - name: Configuring tmux
+      include_tasks: tasks/tmux.yml
+
+    - name: Configuring vim
+      include_tasks: tasks/vim.yml
+
+    - name: Configuring npm
+      include_tasks: tasks/npm.yml
+
+    - name: Additional packages for non WSL systems
+      include_tasks: tasks/not_wsl.yml
+      when: not '"WSL_DISTRO_NAME" in ansible_env'
