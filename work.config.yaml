@@ -1,0 +1,21 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+
+- link:
+
+    # SSH
+    ~/.ssh/config:
+      path: config/ssh/config.work
+      force: true
+
+    # GIT
+    ~/.gitconfig:
+      path: config/git/gitconfig.work
+      force: true
+
+    # ZSH
+    ~/.zshrc:
+      path: config/zsh/zshrc.work
+      force: true

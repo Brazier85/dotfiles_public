@@ -1,0 +1,122 @@
+- defaults:
+    link:
+      relink: true
+      create: true
+      force: true
+
+- clean: ['~', '~/bin']
+
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
+
+
+# Default Links for all
+- link:
+    # ~/.dotfiles: ''
+
+    # SSH
+    ~/.ssh/config:
+      path: config/ssh/config
+      force: true
+
+    # VIM
+    ~/.vimrc: config/vim/vimrc
+
+    # GIT
+    ~/.gitconfig:
+      path: config/git/gitconfig
+      force: true
+    
+    # ZSH
+    ~/.zshrc:
+      path: config/zsh/zshrc
+      force: true
+    ~/.alias: config/zsh/alias
+    ~/.p10k.zsh: config/zsh/p10k.zsh
+
+- shell:
+  -
+    description: install homebrew
+    command: |
+      if ! type brew > /dev/null 2>&1; then
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        echo '# Set PATH, MANPATH, etc., for Homebrew.' >> ~/.zprofile
+        echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.zprofile
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      fi
+    stdout: true
+    stdin: true
+  -
+    description: apt install
+    command: |
+      if [ "$(uname -s)" = "Linux" ]; then
+        sudo apt update
+        sudo apt install -y $(cat config/apt/packages.txt)
+      fi
+    stdout: true
+    stdin: true
+  -
+    description: install homebrew formulas
+    command: |
+      if [ "$(uname -s)" = "Darwin" ]; then
+        bash -c "cd config/mac && brew bundle --no-upgrade --no-lock"
+      fi
+    stdout: true
+    stdin: true
+  -
+    description: install pip3 modules
+    command: bash -c "python3 -m pip install -r config/python/pip3-requirements.txt"
+    stdout: true
+    stdin: true
+  -
+    description: oh-my-zsh
+    command: |
+      if [ -d ~/.oh-my-zsh ]; then
+        if [ ! -d ~/.oh-my-zsh/.git ]; then
+          rm -rf ~/.oh-my-zsh
+          sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        fi
+      fi
+    stdout: true
+    stdin: true
+
+- git:
+    '~/.oh-my-zsh/custom/plugins/zsh-autosuggestions':
+        url: 'https://github.com/zsh-users/zsh-autosuggestions'
+        description: 'oh my zsh - autosuggestions'
+    '~/.oh-my-zsh/custom/themes/powerlevel10k':
+        url: 'https://github.com/romkatv/powerlevel10k.git'
+        description: 'oh my zsh - powerlevel10k'
+
+- shell:
+  -
+    description: powerlevel10k fonts
+    command: |
+      if [ "$(uname -s)" = "Darwin" ]; then
+        cp "config/fonts/MesloLGS NF Regular.ttf" "~/Library/Fonts/MesloLGS NF Regular.ttf"
+      fi
+      if [ "$(uname -s)" = "Linux" ]; then
+        sudo cp "config/fonts/MesloLGS NF Regular.ttf" "/usr/local/share/fonts/MesloLGS NF Regular.ttf"
+      fi
+    stdout: true
+    stdin: true
+
+
+- link:
+    # TMUX
+    ~/.tmux:
+      path: config/tmux/oh-my-tmux
+      force: true
+    ~/.tmux.conf: ~/.tmux/.tmux.conf
+    ~/.tmux.conf.local: config/tmux/tmux.conf.local
+
+
+- shell:
+  -
+    description: Making zsh the default shell
+    command: |
+      export user=$(whoami)
+      sudo chsh -s "$(which zsh)" "$user"
+    stdout: true
+    stdin: true

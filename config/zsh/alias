@@ -1,0 +1,42 @@
+# Alias settings for all systems
+
+# Replace ls with exa
+alias ls="exa --icons -a --group-directories-first"
+
+# General linux
+if [[ $OSTYPE == linux* ]]; then
+	# cat to batcat
+	alias cat="bat"
+	
+	# VPN function
+	function vpn() {
+		sudo wg-quick "$1" wg0
+	}
+
+	# Update dotfiles
+	alias dotfiles="export org=$PWD; cd $HOME/.dotfiles/; ./install; cd $org"
+
+	# HTB VPN
+	alias htb="sudo openvpn $HOME/pentest/htb/lab_Brazier85.ovpn"
+
+	# Rustscan alias
+	function rscan() {
+		rustscan -a "$1" -- -A -sC -sV -oA nmap
+	}
+
+	# Do not use nano
+	alias nano="vim"
+	alias nani="/usr/bin/nano"
+fi
+
+# macOS aliasses
+if [[ $OSTYPE == darwin* ]]; then
+	# cat to batcat
+	alias cat="bat"
+	
+	# Tailing test with batcat
+	alias btail="tail -f $@ | bat --paging=never -l log"
+	
+	# Update dotfiles
+	alias dotfiles="export org=$PWD; cd $HOME/.dotfiles/; ./install; cd $org"
+fi

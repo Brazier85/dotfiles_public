@@ -1,0 +1,10 @@
+[submodule "dotbot"]
+	path = dotbot
+	url = https://github.com/anishathalye/dotbot
+	ignore = dirty
+[submodule "config/tmux/oh-my-tmux"]
+	path = config/tmux/oh-my-tmux
+	url = https://github.com/gpakosz/.tmux
+[submodule "dotbot_plugins/dotbot-git"]
+	path = dotbot_plugins/dotbot-git
+	url = https://github.com/DrDynamic/dotbot-git.git

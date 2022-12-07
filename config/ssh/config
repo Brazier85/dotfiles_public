@@ -1,0 +1,16 @@
+Host github.com
+    IdentityFile ~/.ssh/xxxxxx
+
+Host harald
+	IdentityFile ~/.ssh/xxxxx
+	HostName 192.168.xxxxxxx
+	User xxxxxxx
+	
+Host udm
+	HostName 192.168.xxxxxxx
+	User xxxxxx
+	HostKeyAlgorithms +ssh-rsa
+
+Host ad adguard
+	HostName 192.168.xxxxxxx
+	User pi

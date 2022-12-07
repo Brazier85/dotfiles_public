@@ -1,0 +1,13 @@
+Host *
+    ServerAliveInterval 60
+    ServerAliveCountMax 2
+    TCPKeepAlive yes
+    ConnectTimeout 5
+
+Host gitlab.xxxxxxxx
+    User git
+    IdentityFile ~/.ssh/xxxxxxx
+
+Host xxxxxxxxxx*
+    HostName %h.sickcn.net
+    ForwardAgent yes
